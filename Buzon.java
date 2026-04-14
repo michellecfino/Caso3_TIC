@@ -27,16 +27,18 @@ public class Buzon{
         notifyAll();
     }
 
-    public synchronized Evento retirar(){
-        while(cola.isEmpty()){
+    public synchronized Evento retirar() {
+        while (cola.isEmpty()) {
             try {
                 wait();
-            }
-            catch(InterruptedException e){
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
         Evento evento = cola.poll();
+        
+        notifyAll(); 
+        
         return evento;
     }
 

@@ -14,13 +14,19 @@ public class ServidorConsolidacion extends Thread {
         while (encendido) {
             Evento e = miBuzon.retirar();
 
-            // 2. ¿Es un mensaje de fin?
             if (e.getEstado() == 2) {
                 encendido = false;
                 System.out.println("Servidor " + id + ": Recibida señal de apagado. Finalizando...");
-            } 
-            else {
-                System.out.println("Servidor " + id + ": Consolidando evento [" + e.getId() + "] - Destino: " + e.getDestino());
+            } else {
+                try {
+                    long tiempoProcesamiento = (long) (Math.random() * 900) + 100;
+                    Thread.sleep(tiempoProcesamiento);
+
+                    System.out.println("Servidor " + id + ": Consolidando evento [" + e.getId() + "] - Destino: "
+                            + e.getDestino());
+                } catch (InterruptedException ex) {
+                    System.out.println("Servidor " + id + " interrumpido: " + ex.getMessage());
+                }
             }
         }
     }

@@ -4,7 +4,7 @@ public class Broker extends Thread {
     private Buzon clasificacion;
     private int capacidad;
 
-    public Broker(Buzon entrada, Buzon alertas, Buzon clasificacion, int capacidad ){
+    public Broker(Buzon entrada, Buzon alertas, Buzon clasificacion, int capacidad) {
         this.entrada = entrada;
         this.alertas = alertas;
         this.clasificacion = clasificacion;
@@ -13,21 +13,24 @@ public class Broker extends Thread {
     }
 
     @Override
-    public void run(){
+    public void run() {
         int procesados = 0;
-        while(procesados<capacidad){
-
+        System.out.println("Broker iniciado. Esperando " + capacidad + " eventos.");
+        while (procesados < capacidad) {
             Evento evento = entrada.retirar();
-            //Esto es para saber si son anómalos, si es múltiplo de 8 entonces está mal
-            if((int)Math.random()* 200 %8 == 0){
+
+            if ((int) (Math.random() * 200) % 8 == 0) {
                 alertas.almacenar(evento);
-            }
-            else{
+            } else {
                 clasificacion.almacenar(evento);
             }
-            procesados ++;
-        }
-        alertas.almacenar(new Evento("Fin",-1, 2));
-    }
+            procesados++;
 
+            if (procesados % 10 == 0) {
+                System.out.println(">>> Broker ha procesado " + procesados + " eventos...");
+            }
+        }
+        System.out.println(">>> Broker TERMINÓ. Enviando señal de FIN.");
+        alertas.almacenar(new Evento("Fin", -1, 2));
+    }
 }
