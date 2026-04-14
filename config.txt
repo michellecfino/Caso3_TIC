@@ -1,0 +1,6 @@
+numsensores=3
+numbaseeventos=10
+numclasificadores=2
+numservidores=4
+capconsolidacion=5
+capclasificacion=5
